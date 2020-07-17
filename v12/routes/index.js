@@ -50,7 +50,7 @@ router.get('/', async (req, res, next) => {
     }
 
     viewData = {
-      title: 'Home',
+      title: 'Bucket',
       viewName: 'index',
       accountName: process.env.AZURE_STORAGE_ACCOUNT_NAME,
       containerName: containerName1
