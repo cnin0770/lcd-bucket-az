@@ -1,3 +1,38 @@
+## setup on azure shell
+
+```bash
+$ blobStorageAccount="bucketblob"
+
+
+$ az storage account create --name $blobStorageAccount --resource-group ccResourceGroup --sku Standard_LRS --kind StorageV2 --access-tier hot
+
+
+$ blobStorageAccountKey=$(az storage account keys list -g ccResourceGroup -n $blobStorageAccount --query "[0].value" --output tsv)
+
+$ az storage container create --name images --account-name $blobStorageAccount account-key $blobStorageAccountKey
+
+$ az storage container create --name thumbnails --account-name $blobStorageAccount --account-key $blobStorageAccountKey --public-access container
+
+
+$ az appservice plan create --name bucketAppServicePlan --resource-group ccResourceGroup --sku Free
+
+
+$ webapp="lcd-bucket"
+
+$ az webapp create --name $webapp --resource-group ccResourceGroup --plan bucketAppServicePlan
+
+
+$ az webapp deployment source config --name $webapp --resource-group ccResourceGroup --branch master --manual-integration --repo-url https://github.com/cnin0770/lcd-bucket-az.git
+
+
+$ az webapp config appsettings set --name $webapp --resource-group ccResourceGroup --settings AZURE_STORAGE_ACCOUNT_NAME=$blobStorageAccount AZURE_STORAGE_ACCOUNT_ACCESS_KEY=$blobStorageAccountKey
+```
+
+## ref
+- [official guide](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-upload-process-images?tabs=javascript)
+
+
+
 ---
 page_type: sample
 languages:
